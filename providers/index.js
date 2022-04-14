@@ -20,20 +20,80 @@ const searchNft = (query) => {
   return results;
 }
 
-const getNftCollection = (page) => {
-  switch (page) {
-    case "1":
-      return response;
-    case "2":
-      return response2;
-    case "3":
-      return response3;
-    case "4":
-      return response4;
-    case "5":
-      return response5;
-    default:
-      return response;
+const getNftCollection = (page, sales) => {
+  if(sales) {
+
+    const data = [
+      ...response.assets,
+      ...response2.assets,
+      ...response3.assets,
+      ...response4.assets,
+      ...response5.assets,
+    ];
+
+    const sortedData = data.sort((a, b) => {
+      if (a.sales > b.sales)
+         return -1;
+      if (a.sales < b.sales)
+         return 1;
+      return 0;
+    });
+
+    switch (page) {
+      case "1":
+        return {
+          assets: sortedData.slice(0, 20),
+          next: 2,
+          previous: 1,
+        };
+      case "2":
+        return {
+          assets: sortedData.slice(20, 40),
+          next: 3,
+          previous: 1,
+        };
+      case "3":
+        return {
+          assets: sortedData.slice(40, 60),
+          next: 4,
+          previous: 2,
+        };
+      case "4":
+        return {
+          assets: sortedData.slice(60, 80),
+          next: 5,
+          previous: 3,
+        };
+      case "5":
+        return {
+          assets: sortedData.slice(80),
+          next: 5,
+          previous: 4,
+        };
+      default:
+        return {
+          assets: sortedData.slice(0, 20),
+          next: 2,
+          previous: 1,
+        };
+    }
+
+  }
+  else {
+    switch (page) {
+      case "1":
+        return response;
+      case "2":
+        return response2;
+      case "3":
+        return response3;
+      case "4":
+        return response4;
+      case "5":
+        return response5;
+      default:
+        return response;
+    }
   }
 }
 

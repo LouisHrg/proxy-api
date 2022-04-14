@@ -206,6 +206,13 @@ const { searchNft, getNftCollection, getOneNft } = require('../providers');
  *         description: The number of the page.
  *         schema:
  *           type: integer
+ *       - in: query
+ *         name: sales
+ *         required: false
+ *         description: Sort nft by sales
+ *         schema:
+ *           type: boolean
+ *           example: true
  *     tags:
  *       - NFT
  *     responses:
@@ -230,7 +237,7 @@ const { searchNft, getNftCollection, getOneNft } = require('../providers');
  *                   example: 1
 */
 router.get('/', (req, res) => {
-  res.json(getNftCollection(req.query.page));
+  res.json(getNftCollection(req.query.page, req.query.sales));
 });
 
 /**
