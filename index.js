@@ -23,4 +23,29 @@ app.get('/', (req, res) => {
   }
 });
 
+app.get('/search', (req, res) => {
+  const search = req.query.q;
+
+  const data = [
+    ...response.assets,
+    ...response2.assets,
+    ...response3.assets,
+    ...response4.assets,
+    ...response5.assets,
+  ];
+
+  const results = data.filter(el => {
+    const { name, description, token_id, contract, collection, creator } = el;
+
+    const fullText = `${name} ${description} ${token_id} ${contract.name} ${contract.type} ${collection.name} ${collection.description} ${collection.slug} ${creator.username}`;
+
+    return fullText.indexOf(search) >= 0;
+  });
+
+  return res.json({
+     assets: results,
+     query: search
+  });
+});
+
 app.listen(process.env.PORT || port);
