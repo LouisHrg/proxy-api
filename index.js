@@ -328,6 +328,59 @@ app.get('/search', (req, res) => {
   });
 });
 
+/**
+ * @swagger
+ * /nft/{id}:
+ *   get:
+ *     summary: Retrieve a NFT by id
+ *     description: Retrieve a NFT by id from the api.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The NFT id.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: The NFT data.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               $ref: '#/components/schemas/NFT'
+ *       404:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'Not found'
+*/
+app.get('/nft/:id', (req, res) => {
+  const search = req.params.id;
+
+  const data = [
+    ...response.assets,
+    ...response2.assets,
+    ...response3.assets,
+    ...response4.assets,
+    ...response5.assets,
+  ];
+
+  const result = data.find(el => el.id == search);
+
+  if(result) {
+    return res.json(result);
+  }
+
+  return res.status(404).json({ message: 'Not found' });
+});
+
+
+
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(process.env.PORT || port);
